@@ -1,0 +1,45 @@
+function main(args as object) as object
+    return roca(args).describe("constructor", sub()
+        m.it("default values", sub()
+            childrenBoundingRects = [
+                { x: 0, y: 0, width: 3, height: 2 },
+                { x: 0, y: 0, width: 5, height: 7 }
+                { x: 0, y: 0, width: 8, height: 3 }
+            ]
+            sgf = new SGFlexModel(childrenBoundingRects)
+
+            m.assert.equal(sgf.width, 16, "incorrect default width")
+            m.assert.equal(sgf.height, 12, "incorrect default height")
+            m.assert.equal(sgf.direction, "row", "incorrect default direction")
+            m.assert.equal(sgf.justifyContent, "flexStart", "incorrect default justifyContent")
+            m.assert.equal(sgf.alignItems, "flexStart", "incorrect default alignItems")
+        end sub)
+
+        m.it("numeric values", sub()
+            childrenBoundingRects = [
+                { x: 0, y: 0, width: 3, height: 2 },
+                { x: 0, y: 0, width: 5, height: 7 }
+                { x: 0, y: 0, width: 8, height: 3 }
+            ]
+            sgf = new SGFlexModel(childrenBoundingRects)
+            m.assert.equal(sgf.childrenAccWidth, 16, "incorrect childrenAccWidth")
+            m.assert.equal(sgf.childrenAccHeight, 12, "incorrect childrenAccHeight")
+        end sub)
+
+        m.it("direction: row", sub()
+            sgf = new SGFlexModel([], { direction: "row" })
+            m.assert.equal(sgf.mainAxis, "x", "incorrect mainAxis")
+            m.assert.equal(sgf.crossAxis, "y", "incorrect crossAxis")
+            m.assert.equal(sgf.mainDimension, "width", "incorrect mainDimension")
+            m.assert.equal(sgf.crossDimension, "height", "incorrect crossDimension")
+        end sub)
+
+        m.it("direction: column", sub()
+            sgf = new SGFlexModel([], { direction: "column" })
+            m.assert.equal(sgf.mainAxis, "y", "incorrect mainAxis")
+            m.assert.equal(sgf.crossAxis, "x", "incorrect crossAxis")
+            m.assert.equal(sgf.mainDimension, "height", "incorrect mainDimension")
+            m.assert.equal(sgf.crossDimension, "width", "incorrect crossDimension")
+        end sub)
+    end sub)
+end function

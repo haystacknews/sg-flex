@@ -1,0 +1,233 @@
+class SGFlexModel
+    private width as float
+    private height as float
+
+    ' See enums at the bottom of this file
+    private direction as string
+    private justifyContent as string
+    private alignItems as string
+
+    private mainAxis as string
+    private crossAxis as string
+    private mainDimension as string
+    private crossDimension as string
+
+    private childrenBoundingRects as object
+    private childrenAccWidth as float
+    private childrenAccHeight as float
+    private childrenMaxHeight as float
+    private childrenMaxWidth as float
+
+    ' childrenBoundingRects as object,
+    ' width = -1 as float,
+    ' height = -1 as float,
+    ' direction = "row" as string,
+    ' justifyContent = "flexStart" as string,
+    ' alignItems = "flexStart" as string
+
+    sub new(childrenBoundingRects as object, _args = {} as object)
+        m.childrenBoundingRects = childrenBoundingRects
+
+        args = {
+            width: -1,
+            height: -1,
+            direction: "row",
+            justifyContent: "flexStart",
+            alignItems: "flexStart"
+        }
+
+        for each key in _args.keys()
+            args[key] = _args[key]
+        end for
+
+        m.direction = args.direction
+        m.justifyContent = args.justifyContent
+        m.alignItems = args.alignItems
+
+        if (m.direction = "row")
+            m.mainAxis = "x"
+            m.crossAxis = "y"
+            m.mainDimension = "width"
+            m.crossDimension = "height"
+        else
+            m.mainAxis = "y"
+            m.crossAxis = "x"
+            m.mainDimension = "height"
+            m.crossDimension = "width"
+        end if
+
+        m.childrenAccWidth = 0
+        m.childrenAccHeight = 0
+        m.childrenMaxWidth = 0
+        m.childrenMaxHeight = 0
+        for each childRect in childrenBoundingRects
+            m.childrenAccWidth += childRect.width
+            m.childrenAccHeight += childRect.height
+
+            if (m.childrenMaxWidth < childRect.width)
+                m.childrenMaxWidth = childRect.width
+            end if
+
+            if (m.childrenMaxHeight < childRect.height)
+                m.childrenMaxHeight = childRect.height
+            end if
+        end for
+
+        if (args.width < 0)
+            m.width = m.childrenAccWidth
+        else
+            m.width = args.width
+        end if
+
+        if (args.height < 0)
+            m.height = m.childrenAccHeight
+        else
+            m.height = args.height
+        end if
+    end sub
+
+    function getWidth() as float
+        return m.width
+    end function
+
+    function getHeight() as float
+        return m.height
+    end function
+
+    sub setWidth(width as float)
+        m.width = width
+    end sub
+
+    sub setHeight(height as float)
+        m.height = height
+    end sub
+
+    sub setChildrenBoundingRects(childrenBoundingRects as object)
+        m.childrenBoundingRects = childrenBoundingRects
+    end sub
+
+    ' /**
+    '  * Returns a list of translations to apply to each original child at the given index
+    '  * to position them according to the `direction`, `justifyContent` and `alignItems` values.
+    '  * @returns { childIndex as integer, x as float, y as float }[]
+    ' */
+    public function getTranslations() as object
+        translations = []
+
+        ' Main axis translations
+        if (m.justifyContent = "flexStart")
+
+        else if (m.justifyContent = "flexEnd")
+
+        else if (m.justifyContent = "center")
+
+        else if (m.justifyContent = "spaceBetween")
+            if (m.childrenBoundingRects.count() > 1)
+                ' SB = (P_w - max(C_h)) / (n - 1)
+                spaceBetween = m[m.mainDimension]
+                accDimension = 0
+                if (m.direction = "row")
+                    accDimension = m.childrenAccWidth
+                else
+                    accDimension = m.childrenAccHeight
+                end if
+                spaceBetween -= accDimension
+                spaceBetween /= m.childrenBoundingRects.count() - 1
+
+                for i = 1 to m.childrenBoundingRects.count() - 1
+                    prevTranslation = translations[translations.count() - 1]
+                    prevChild = m.childrenBoundingRects[i - 1]
+
+                    if (prevTranslation = invalid)
+                        prevTranslation = { x: prevChild.x, y: prevChild.y }
+                    end if
+
+                    ' Translation formula (change "x" to "y" and "w" to "h" for direction = column)
+                    ' T(n)_x = T(n-1)_x + C(n-1)_w + SB + (C(n-1)_x * -1)
+                    ' We consider the last term to account for children
+                    ' that are not aligned with the parent component.
+                    ' For example, children that are `LayoutGroup`s with `horizAlignment` = "center"
+                    translatedMainAxis = prevTranslation[m.mainAxis]
+                    translatedMainAxis += prevChild[m.mainDimension]
+                    translatedMainAxis += spaceBetween
+                    translatedMainAxis += m.childrenBoundingRects[i].[m.mainAxis] * -1
+
+                    translation = { childIndex: i }
+                    translation[m.mainAxis] = translatedMainAxis
+                    translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
+
+                    translations.push(translation)
+                end for
+            end if
+        else if (m.justifyContent = "spaceAround")
+
+        else if (m.justifyContent = "spaceEvenly")
+
+        end if
+
+        ' Cross axis translations
+        if (m.alignItems = "flexStart")
+
+        else if (m.alignItems = "flexEnd")
+
+        else if (m.alignItems = "center")
+            for i = 0 to m.childrenBoundingRects.count() - 1
+                translatedCrossAxis = (m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]) / 2
+                translatedCrossAxis += m.childrenBoundingRects[i][m.crossAxis] * -1
+
+                existingTranslationIndex = -1
+
+                for j = 0 to translations.count() - 1
+                    if (translations[j].childIndex = i)
+                        existingTranslationIndex = j
+                        exit for
+                    end if
+                end for
+
+                if (existingTranslationIndex <> -1)
+                    translations[existingTranslationIndex][m.crossAxis] = translatedCrossAxis
+                else
+                    translation = { childIndex: i }
+                    translation[m.mainAxis] = m.childrenBoundingRects[i][m.mainAxis]
+                    translation[m.crossAxis] = translatedCrossAxis
+                    translations.push(translation)
+                end if
+            end for
+        end if
+
+        return translations
+    end function
+end class
+
+enum JustifyContent
+    flexStart = "flexStart"
+    flexEnd = "flexEnd"
+    center = "center"
+    spaceBetween = "spaceBetween"
+    spaceAround = "spaceAround"
+    spaceEvenly = "spaceEvenly"
+end enum
+
+enum AlignItems
+    flexStart = "flexStart"
+    flexEnd = "flexEnd"
+    center = "center"
+    ' The values `stretch` and `baseline` are not really possible since
+    ' we can't modify the size of the children or inspect their contents.
+end enum
+
+enum Axis
+    x = "x"
+    y = "y"
+end enum
+
+enum Dimension
+    width = "width"
+    height = "height"
+end enum
+
+enum ErrorCode
+    invalidDirection = "Invalid `direction` value"
+    invalidJustifyContent = "Invalid `justifyContent` value"
+    invalidAlignItems = "Invalid `alignItems` value"
+end enum
