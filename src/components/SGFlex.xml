@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component
+    name="SGFlex"
+    extends="Group"
+    xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd"
+>
+    <interface>
+        <field id="width" type="integer" value="-1"/>
+        <field id="height" type="integer" value="-1"/>
+
+        <!-- "row" -->
+        <field id="direction" type="string" />
+        <!-- "start"|"end"|"center"|"spaceBetween"|"spaceAround"|"spaceEvenly" -->
+        <field id="justifyContent" type="string" />
+        <!-- "start"|"end"|"center" -->
+        <field id="alignItems" type="string" />
+
+        <field id="flexifyOnce" type="boolean" />
+
+        <function name="flexify" />
+    </interface>
+</component>
