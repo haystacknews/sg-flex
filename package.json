@@ -1,0 +1,40 @@
+{
+  "name": "sg-flex",
+  "version": "0.0.1",
+  "description": "Flexbox for Roku's SceneGraph",
+  "engines": {
+    "node": ">=16.14.2",
+    "npm": ">=8.5.0"
+  },
+  "scripts": {
+    "build": "rm -r dist/ out/;  bsc",
+    "test": "npm run build && cd dist/roku-deploy-staging && roca",
+    "lint": "bslint --project 'bsconfig/bsconfig.lint.json' --lintConfig bsconfig/bslint.jsonc",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "bsfmt 'src/**/*.bs' --bsfmt-path 'bsconfig/bsfmt.jsonc' --check",
+    "format:fix": "bsfmt 'src/**/*.bs' --bsfmt-path 'bsconfig/bsfmt.jsonc' --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arturocuya/sg-flex.git"
+  },
+  "keywords": [
+    "ropm",
+    "scenegraph",
+    "flexbox",
+    "roku"
+  ],
+  "author": "Arturo Cuya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arturocuya/sg-flex/issues"
+  },
+  "homepage": "https://github.com/arturocuya/sg-flex#readme",
+  "dependencies": {
+    "@hulu/roca": "^0.25.0",
+    "@rokucommunity/bslint": "^0.6.1",
+    "brighterscript": "^0.47.1",
+    "brighterscript-formatter": "^1.6.10",
+    "brs": "^0.45.0"
+  }
+}

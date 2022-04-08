@@ -1,0 +1,5 @@
+{
+    "extends": "bsconfig/bsconfig.dev.json",
+    "host": "",
+    "password": ""
+}

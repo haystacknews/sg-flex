@@ -1,0 +1,26 @@
+{
+    "autoImportComponentScript": true,
+    "diagnosticFilters": [
+        {
+            "codes": [
+                1013
+            ],
+            "src": "tests/**/*.bs"
+        }
+    ],
+    "files": [
+        "manifest",
+        "source/**/*.*",
+        "components/**/*.*",
+        "images/**/*.*",
+        "tests/**/*.*"
+    ],
+    "lintConfig": "bsconfig/bslint.jsonc",
+    "plugins": [
+        "@rokucommunity/bslint"
+    ],
+    "retainStagingFolder": true,
+    "rootDir": "../src/",
+    "stagingFolderPath": "dist/roku-deploy-staging",
+    "username": "rokudev"
+}
