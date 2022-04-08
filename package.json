@@ -36,5 +36,13 @@
     "brighterscript": "^0.47.1",
     "brighterscript-formatter": "^1.6.10",
     "brs": "^0.45.0"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
