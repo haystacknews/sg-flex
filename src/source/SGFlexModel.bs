@@ -18,22 +18,19 @@ class SGFlexModel
     private childrenMaxHeight as float
     private childrenMaxWidth as float
 
-    ' childrenBoundingRects as object,
-    ' width = -1 as float,
-    ' height = -1 as float,
-    ' direction = "row" as string,
-    ' justifyContent = "flexStart" as string,
-    ' alignItems = "flexStart" as string
-
     sub new(childrenBoundingRects as object, _args = {} as object)
         m.childrenBoundingRects = childrenBoundingRects
 
         args = {
             width: -1,
             height: -1,
-            direction: "row",
-            justifyContent: "flexStart",
-            alignItems: "flexStart"
+            ' TODO: Remove disables when bslint stops complaining about unused variables for enums.
+            ' bs:disable-next-line
+            direction: Direction.row,
+            ' bs:disable-next-line
+            justifyContent: JustifyContent.flexStart,
+            ' bs:disable-next-line
+            alignItems: AlignItems.flexStart
         }
 
         for each key in _args.keys()
@@ -44,16 +41,25 @@ class SGFlexModel
         m.justifyContent = args.justifyContent
         m.alignItems = args.alignItems
 
-        if (m.direction = "row")
-            m.mainAxis = "x"
-            m.crossAxis = "y"
-            m.mainDimension = "width"
-            m.crossDimension = "height"
+        ' bs:disable-next-line
+        if (m.direction = Direction.row)
+            ' bs:disable-next-line
+            m.mainAxis = Axis.x
+            ' bs:disable-next-line
+            m.crossAxis = Axis.y
+            ' bs:disable-next-line
+            m.mainDimension = Dimension.width
+            ' bs:disable-next-line
+            m.crossDimension = Dimension.height
         else
-            m.mainAxis = "y"
-            m.crossAxis = "x"
-            m.mainDimension = "height"
-            m.crossDimension = "width"
+            ' bs:disable-next-line
+            m.mainAxis = Axis.y
+            ' bs:disable-next-line
+            m.crossAxis = Axis.x
+            ' bs:disable-next-line
+            m.mainDimension = Dimension.height
+            ' bs:disable-next-line
+            m.crossDimension = Dimension.width
         end if
 
         m.childrenAccWidth = 0
@@ -115,18 +121,23 @@ class SGFlexModel
         translations = []
 
         ' Main axis translations
-        if (m.justifyContent = "flexStart")
+        ' bs:disable-next-line
+        if (m.justifyContent = JustifyContent.flexStart)
 
-        else if (m.justifyContent = "flexEnd")
+        ' bs:disable-next-line
+        else if (m.justifyContent = JustifyContent.flexEnd)
 
-        else if (m.justifyContent = "center")
+        ' bs:disable-next-line
+        else if (m.justifyContent = JustifyContent.center)
 
-        else if (m.justifyContent = "spaceBetween")
+        ' bs:disable-next-line
+        else if (m.justifyContent = JustifyContent.spaceBetween)
             if (m.childrenBoundingRects.count() > 1)
                 ' SB = (P_w - max(C_h)) / (n - 1)
                 spaceBetween = m[m.mainDimension]
                 accDimension = 0
-                if (m.direction = "row")
+                ' bs:disable-next-line
+                if (m.direction = Direction.row)
                     accDimension = m.childrenAccWidth
                 else
                     accDimension = m.childrenAccHeight
@@ -159,18 +170,23 @@ class SGFlexModel
                     translations.push(translation)
                 end for
             end if
-        else if (m.justifyContent = "spaceAround")
+        ' bs:disable-next-line
+        else if (m.justifyContent = JustifyContent.spaceAround)
 
-        else if (m.justifyContent = "spaceEvenly")
+        ' bs:disable-next-line
+        else if (m.justifyContent = JustifyContent.spaceEvenly)
 
         end if
 
         ' Cross axis translations
-        if (m.alignItems = "flexStart")
+        ' bs:disable-next-line
+        if (m.alignItems = AlignItems.flexStart)
 
-        else if (m.alignItems = "flexEnd")
+        ' bs:disable-next-line
+        else if (m.alignItems = AlignItems.flexEnd)
 
-        else if (m.alignItems = "center")
+        ' bs:disable-next-line
+        else if (m.alignItems = AlignItems.center)
             for i = 0 to m.childrenBoundingRects.count() - 1
                 translatedCrossAxis = (m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]) / 2
                 translatedCrossAxis += m.childrenBoundingRects[i][m.crossAxis] * -1
@@ -198,6 +214,11 @@ class SGFlexModel
         return translations
     end function
 end class
+
+enum Direction
+    row = "row"
+    column = "column"
+end enum
 
 enum JustifyContent
     flexStart = "flexStart"
