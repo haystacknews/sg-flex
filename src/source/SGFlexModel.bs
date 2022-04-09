@@ -1,4 +1,8 @@
+import "pkg:/source/roku_modules/log/LogMixin.brs"
+
 class SGFlexModel
+    private logger
+
     private width as float
     private height as float
 
@@ -19,6 +23,9 @@ class SGFlexModel
     private childrenMaxWidth as float
 
     sub new(childrenBoundingRects as object, _args = {} as object)
+        @deviceOnly
+        m.logger = log.initializeLogManager(["log_PrintTransport"], 0)
+        
         m.childrenBoundingRects = childrenBoundingRects
 
         args = {
@@ -36,6 +43,8 @@ class SGFlexModel
         for each key in _args.keys()
             args[key] = _args[key]
         end for
+
+        m.validateArgs(args)
 
         m.direction = args.direction
         m.justifyContent = args.justifyContent
@@ -213,6 +222,30 @@ class SGFlexModel
 
         return translations
     end function
+
+    private sub validateArgs(args as object)
+        ' TODO: Replace conditionals with Enums when bug is fixed.
+        ' bs:disable-next-line
+        ' if (args.direction <> Direction.row and args.direction <> Direction.column)
+        if (args.direction <> "row" and args.direction <> "column")
+            @deviceOnly
+            m.logger.error("Invalid direction:", args.direction)
+        end if
+
+        ' bs:disable-next-line
+        ' if (args.justifyContent <> JustifyContent.flexStart and args.justifyContent <> JustifyContent.flexEnd and args.justifyContent <> JustifyContent.center and args.justifyContent <> JustifyContent.spaceBetween and args.justifyContent <> JustifyContent.spaceAround and args.justifyContent <> JustifyContent.spaceEvenly)
+        if (args.justifyContent <> "flexStart" and args.justifyContent <> "flexEnd" and args.justifyContent <> "center" and args.justifyContent <> "spaceBetween" and args.justifyContent <> "spaceAround" and args.justifyContent <> "spaceEvenly")
+            @deviceOnly
+            m.logger.error("Invalid justifyContent:", args.justifyContent)
+        end if
+
+        ' bs:disable-next-line
+        ' if (args.alignItems <> AlignItems.flexStart and args.alignItems <> AlignItems.flexEnd and args.alignItems <> AlignItems.center)
+        if (args.alignItems <> "flexStart" and args.alignItems <> "flexEnd" and args.alignItems <> "center")
+            @deviceOnly
+            m.logger.error("Invalid alignItems:", args.alignItems)
+        end if
+    end sub
 end class
 
 enum Direction
