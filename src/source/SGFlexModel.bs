@@ -20,6 +20,14 @@ class SGFlexModel
     private childrenMaxHeight as float
     private childrenMaxWidth as float
 
+    ' @param {dynamic[]} childrenBoundingRects - An array of bounding rects for each child.
+    ' @param {object} [_args] - An object containing the following properties:
+    ' @param {float} [_args.width] - The width of the parent container. If not present it will be set as the accumulated width of the children.
+    ' @param {float} [_args.height] - The height of the parent container. If not present it will be set as the accumulated height of the children.
+    ' @param {string} [_args.direction="row"] - The direction of the layout.
+    ' @param {string} [_args.justifyContent="flexStart"] - The justification of the layout in the main axis.
+    ' @param {string} [_args.alignItems="flexStart"] - The alignment of the layout in the cross axis.
+    ' @param {object} [logger=invalid] - A `roku-log` instance.
     sub new(childrenBoundingRects as object, _args = {} as object, logger = invalid as dynamic)
         m.logger = logger
 
@@ -98,31 +106,9 @@ class SGFlexModel
         end if
     end sub
 
-    function getWidth() as float
-        return m.width
-    end function
-
-    function getHeight() as float
-        return m.height
-    end function
-
-    sub setWidth(width as float)
-        m.width = width
-    end sub
-
-    sub setHeight(height as float)
-        m.height = height
-    end sub
-
-    sub setChildrenBoundingRects(childrenBoundingRects as object)
-        m.childrenBoundingRects = childrenBoundingRects
-    end sub
-
-    ' /**
-    '  * Returns a list of translations to apply to each original child at the given index
-    '  * to position them according to the `direction`, `justifyContent` and `alignItems` values.
-    '  * @returns { childIndex as integer, x as float, y as float }[]
-    ' */
+    ' Returns a list of translations to apply to each original child at the given index
+    ' to position them according to the `direction`, `justifyContent` and `alignItems` values.
+    ' @returns { childIndex: integer, x: float, y: float }[]
     public function getTranslations() as object
         translations = []
 
