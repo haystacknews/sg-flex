@@ -33,7 +33,7 @@
   "dependencies": {
     "@hulu/roca": "^0.25.0",
     "@rokucommunity/bslint": "^0.6.1",
-    "brighterscript": "^0.47.1",
+    "brighterscript": "^0.47.3",
     "brighterscript-formatter": "^1.6.10",
     "brs": "^0.45.0"
   },
