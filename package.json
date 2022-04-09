@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arturocuya/sg-flex.git"
+    "url": "git+https://github.com/haystacknews/sg-flex.git"
   },
   "keywords": [
     "ropm",
@@ -31,9 +31,9 @@
   "author": "Arturo Cuya",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arturocuya/sg-flex/issues"
+    "url": "https://github.com/haystacknews/sg-flex/issues"
   },
-  "homepage": "https://github.com/arturocuya/sg-flex#readme",
+  "homepage": "https://github.com/haystacknews/sg-flex#readme",
   "dependencies": {
     "@rokucommunity/bslint": "^0.6.1",
     "brighterscript-formatter": "^1.6.10",
