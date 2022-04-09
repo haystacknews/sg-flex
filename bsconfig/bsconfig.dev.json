@@ -28,5 +28,6 @@
     "retainStagingFolder": true,
     "rootDir": "../src/",
     "stagingFolderPath": "dist/roku-deploy-staging",
-    "username": "rokudev"
+    "username": "rokudev",
+    "require": ["ts-node/register"]
 }
