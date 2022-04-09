@@ -1,0 +1,7 @@
+{
+    "extends": "bsconfig.dev.json",
+    "plugins": [
+        "@rokucommunity/bslint",
+        "./plugins/testAnnotations.ts"
+    ]
+}

@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "rm -r dist/ out/;  bsc",
-    "test": "npm run build && cd dist/roku-deploy-staging && roca",
+    "build:test": "npm run build -- --project bsconfig/bsconfig.test.json",
+    "test": "npm run build:test && cd dist/roku-deploy-staging && roca",
     "lint": "bslint --project 'bsconfig/bsconfig.lint.json' --lintConfig bsconfig/bslint.jsonc",
     "lint:fix": "npm run lint -- --fix",
     "format:base": "bsfmt 'src/**/*.bs' '!src/**/roku_modules/**/*' --bsfmt-path 'bsconfig/bsfmt.jsonc'",
