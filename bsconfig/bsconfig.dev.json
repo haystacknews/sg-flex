@@ -6,6 +6,12 @@
                 1013
             ],
             "src": "tests/**/*.bs"
+        },
+        {
+            "codes": [
+                1107
+            ],
+            "src": "**/roku_modules/**/*"
         }
     ],
     "files": [

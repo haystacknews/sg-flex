@@ -31,18 +31,22 @@
   },
   "homepage": "https://github.com/arturocuya/sg-flex#readme",
   "dependencies": {
-    "@hulu/roca": "^0.25.0",
     "@rokucommunity/bslint": "^0.6.1",
     "brighterscript": "^0.47.3",
     "brighterscript-formatter": "^1.6.10",
-    "brs": "^0.45.0"
+    "log": "npm:roku-log@^0.6.0"
   },
   "devDependencies": {
+    "@hulu/roca": "^0.25.0",
+    "brs": "^0.43.0",
     "cz-conventional-changelog": "^3.3.0"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "ropm": {
+    "rootDir": "src"
   }
 }

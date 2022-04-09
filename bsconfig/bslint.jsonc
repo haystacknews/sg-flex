@@ -41,5 +41,7 @@
         "consistent-return": "error"
     },
     "globals": [],
-    "ignores": []
+    "ignores": [
+        "**/roku_modules/**/*"
+    ]
 }
