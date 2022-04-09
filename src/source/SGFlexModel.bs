@@ -25,7 +25,7 @@ class SGFlexModel
     sub new(childrenBoundingRects as object, _args = {} as object)
         @deviceOnly
         m.logger = log.initializeLogManager(["log_PrintTransport"], 0)
-        
+
         m.childrenBoundingRects = childrenBoundingRects
 
         args = {
@@ -133,13 +133,13 @@ class SGFlexModel
         ' bs:disable-next-line
         if (m.justifyContent = JustifyContent.flexStart)
 
-        ' bs:disable-next-line
+            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.flexEnd)
 
-        ' bs:disable-next-line
+            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.center)
 
-        ' bs:disable-next-line
+            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.spaceBetween)
             if (m.childrenBoundingRects.count() > 1)
                 ' SB = (P_w - max(C_h)) / (n - 1)
@@ -165,7 +165,7 @@ class SGFlexModel
                     ' Translation formula (change "x" to "y" and "w" to "h" for direction = column)
                     ' T(n)_x = T(n-1)_x + C(n-1)_w + SB + (C(n-1)_x * -1)
                     ' We consider the last term to account for children
-                    ' that are not aligned with the parent component.
+                    ' whose center of coordinates is not the top left of their boundingRect.
                     ' For example, children that are `LayoutGroup`s with `horizAlignment` = "center"
                     translatedMainAxis = prevTranslation[m.mainAxis]
                     translatedMainAxis += prevChild[m.mainDimension]
@@ -179,10 +179,10 @@ class SGFlexModel
                     translations.push(translation)
                 end for
             end if
-        ' bs:disable-next-line
+            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.spaceAround)
 
-        ' bs:disable-next-line
+            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.spaceEvenly)
 
         end if
@@ -191,10 +191,10 @@ class SGFlexModel
         ' bs:disable-next-line
         if (m.alignItems = AlignItems.flexStart)
 
-        ' bs:disable-next-line
+            ' bs:disable-next-line
         else if (m.alignItems = AlignItems.flexEnd)
 
-        ' bs:disable-next-line
+            ' bs:disable-next-line
         else if (m.alignItems = AlignItems.center)
             for i = 0 to m.childrenBoundingRects.count() - 1
                 translatedCrossAxis = (m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]) / 2
@@ -224,26 +224,25 @@ class SGFlexModel
     end function
 
     private sub validateArgs(args as object)
-        ' TODO: Replace conditionals with Enums when bug is fixed.
         ' bs:disable-next-line
-        ' if (args.direction <> Direction.row and args.direction <> Direction.column)
-        if (args.direction <> "row" and args.direction <> "column")
+        if ((args.direction <> Direction.row) and (args.direction <> Direction.column))
             @deviceOnly
-            m.logger.error("Invalid direction:", args.direction)
+            ' bs:disable-next-line
+            m.logger.error(ErrorCode.invalidDirection, args.direction)
         end if
 
         ' bs:disable-next-line
-        ' if (args.justifyContent <> JustifyContent.flexStart and args.justifyContent <> JustifyContent.flexEnd and args.justifyContent <> JustifyContent.center and args.justifyContent <> JustifyContent.spaceBetween and args.justifyContent <> JustifyContent.spaceAround and args.justifyContent <> JustifyContent.spaceEvenly)
-        if (args.justifyContent <> "flexStart" and args.justifyContent <> "flexEnd" and args.justifyContent <> "center" and args.justifyContent <> "spaceBetween" and args.justifyContent <> "spaceAround" and args.justifyContent <> "spaceEvenly")
+        if ((args.justifyContent <> JustifyContent.flexStart) and (args.justifyContent <> JustifyContent.flexEnd) and (args.justifyContent <> JustifyContent.center) and (args.justifyContent <> JustifyContent.spaceBetween) and (args.justifyContent <> JustifyContent.spaceAround) and (args.justifyContent <> JustifyContent.spaceEvenly))
             @deviceOnly
-            m.logger.error("Invalid justifyContent:", args.justifyContent)
+            ' bs:disable-next-line
+            m.logger.error(ErrorCode.invalidJustifyContent, args.justifyContent)
         end if
 
         ' bs:disable-next-line
-        ' if (args.alignItems <> AlignItems.flexStart and args.alignItems <> AlignItems.flexEnd and args.alignItems <> AlignItems.center)
-        if (args.alignItems <> "flexStart" and args.alignItems <> "flexEnd" and args.alignItems <> "center")
+        if ((args.alignItems <> AlignItems.flexStart) and (args.alignItems <> AlignItems.flexEnd) and (args.alignItems <> AlignItems.center))
             @deviceOnly
-            m.logger.error("Invalid alignItems:", args.alignItems)
+            ' bs:disable-next-line
+            m.logger.error(ErrorCode.invalidAlignItems, args.alignItems)
         end if
     end sub
 end class
@@ -281,7 +280,7 @@ enum Dimension
 end enum
 
 enum ErrorCode
-    invalidDirection = "Invalid `direction` value"
-    invalidJustifyContent = "Invalid `justifyContent` value"
-    invalidAlignItems = "Invalid `alignItems` value"
+    invalidDirection = "Invalid `direction` value."
+    invalidJustifyContent = "Invalid `justifyContent` value."
+    invalidAlignItems = "Invalid `alignItems` value."
 end enum
