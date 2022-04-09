@@ -1,7 +1,5 @@
-import "pkg:/source/roku_modules/log/LogMixin.brs"
-
 class SGFlexModel
-    private logger
+    private logger as dynamic
 
     private width as float
     private height as float
@@ -22,9 +20,8 @@ class SGFlexModel
     private childrenMaxHeight as float
     private childrenMaxWidth as float
 
-    sub new(childrenBoundingRects as object, _args = {} as object)
-        @deviceOnly
-        m.logger = log.initializeLogManager(["log_PrintTransport"], 0)
+    sub new(childrenBoundingRects as object, _args = {} as object, logger = invalid as dynamic)
+        m.logger = logger
 
         m.childrenBoundingRects = childrenBoundingRects
 
@@ -226,23 +223,26 @@ class SGFlexModel
     private sub validateArgs(args as object)
         ' bs:disable-next-line
         if ((args.direction <> Direction.row) and (args.direction <> Direction.column))
-            @deviceOnly
-            ' bs:disable-next-line
-            m.logger.error(ErrorCode.invalidDirection, args.direction)
+            if (m.logger <> invalid)
+                ' bs:disable-next-line
+                m.logger.error(ErrorCode.invalidDirection, args.direction)
+            end if
         end if
 
         ' bs:disable-next-line
         if ((args.justifyContent <> JustifyContent.flexStart) and (args.justifyContent <> JustifyContent.flexEnd) and (args.justifyContent <> JustifyContent.center) and (args.justifyContent <> JustifyContent.spaceBetween) and (args.justifyContent <> JustifyContent.spaceAround) and (args.justifyContent <> JustifyContent.spaceEvenly))
-            @deviceOnly
-            ' bs:disable-next-line
-            m.logger.error(ErrorCode.invalidJustifyContent, args.justifyContent)
+            if (m.logger <> invalid)
+                ' bs:disable-next-line
+                m.logger.error(ErrorCode.invalidJustifyContent, args.justifyContent)
+            end if
         end if
 
         ' bs:disable-next-line
         if ((args.alignItems <> AlignItems.flexStart) and (args.alignItems <> AlignItems.flexEnd) and (args.alignItems <> AlignItems.center))
-            @deviceOnly
-            ' bs:disable-next-line
-            m.logger.error(ErrorCode.invalidAlignItems, args.alignItems)
+            if (m.logger <> invalid)
+                ' bs:disable-next-line
+                m.logger.error(ErrorCode.invalidAlignItems, args.alignItems)
+            end if
         end if
     end sub
 end class
