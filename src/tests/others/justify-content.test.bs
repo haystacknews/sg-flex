@@ -1,0 +1,20 @@
+function main(args as object) as object
+    return roca(args).describe("other justifyContent tests", sub()
+        m.it("direction=column", sub()
+            args = {
+                width: 128,
+                height: 480,
+                direction: "column",
+                justifyContent: "spaceBetween"
+            }
+            boundingRect = { x: 0, y: 0, width: 128, height: 128 }
+            sgf = new SGFlexModel([boundingRect, boundingRect, boundingRect], args)
+            expected = [
+                { childIndex: 1, x: 0, y: 176 },
+                { childIndex: 2, x: 0, y: 352 }
+            ]
+            actual = sgf.getTranslations()
+            m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")
+        end sub)
+    end sub)
+end function

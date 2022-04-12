@@ -115,7 +115,18 @@ class SGFlexModel
         ' Main axis translations
         ' bs:disable-next-line
         if (m.justifyContent = JustifyContent.flexStart)
+            if (m.childrenBoundingRects[0][m.mainAxis] <> 0)
+                firstTranslation = { childIndex: 0 }
+                firstTranslation[m.mainAxis] = m.childrenBoundingRects[0].[m.mainAxis] * -1
+                translations.push(firstTranslation)
+            end if
 
+            for i = 1 to m.childrenBoundingRects.count() - 1
+                translation = { childIndex: i }
+                prevTranslation = m.getPreviousTranslation(i, translations)
+                translation[m.mainAxis] = prevTranslation[m.mainAxis] + m.childrenBoundingRects[i - 1][m.mainDimension]
+                translations.push(translation)
+            end for
             ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.flexEnd)
 
@@ -138,12 +149,8 @@ class SGFlexModel
                 spaceBetween /= m.childrenBoundingRects.count() - 1
 
                 for i = 1 to m.childrenBoundingRects.count() - 1
-                    prevTranslation = translations[translations.count() - 1]
+                    prevTranslation = m.getPreviousTranslation(i, translations)
                     prevChild = m.childrenBoundingRects[i - 1]
-
-                    if (prevTranslation = invalid)
-                        prevTranslation = { x: prevChild.x, y: prevChild.y }
-                    end if
 
                     ' Translation formula (change "x" to "y" and "w" to "h" for direction = column)
                     ' T(n)_x = T(n-1)_x + C(n-1)_w + SB + (C(n-1)_x * -1)
@@ -235,6 +242,17 @@ class SGFlexModel
             end if
         end if
     end sub
+
+    private function getPreviousTranslation(currentIndex as integer, translations as object) as object
+        prevTranslation = translations[translations.count() - 1]
+        prevChild = m.childrenBoundingRects[currentIndex - 1]
+
+        if (prevTranslation = invalid)
+            prevTranslation = { x: prevChild.x, y: prevChild.y }
+        end if
+
+        return prevTranslation
+    end function
 end class
 
 enum Direction

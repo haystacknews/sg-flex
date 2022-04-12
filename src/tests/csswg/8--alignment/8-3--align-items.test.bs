@@ -1,0 +1,20 @@
+function main(args as object) as object
+    return roca(args).describe("csswg: 8.3 Cross-axis Alignment: the align-items and align-self properties", sub()
+        m.it("flexbox | align-items: center", sub()
+            args = {
+                width: 482,
+                height: 98,
+                alignItems: "center"
+            }
+            boundingRect = { x: 0, y: 0, width: 160, height: 32 }
+            sgf = new SGFlexModel([boundingRect, boundingRect, boundingRect], args)
+            expected = [
+                { childIndex: 1, x: 160, y: 33 },
+                { childIndex: 2, x: 320, y: 33 },
+                { childIndex: 0, x: 0, y: 33 }
+            ]
+            actual = sgf.getTranslations()
+            m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")
+        end sub)
+    end sub)
+end function
