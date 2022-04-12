@@ -213,6 +213,10 @@ class SGFlexModel
                 ' bs:disable-next-line
                 m.logger.error(ErrorCode.invalidDirection, args.direction)
             end if
+            ' TODO: Uncomment this when brighterscript supports `ThrowStatement` as `createVisitor`
+            ' argument.
+            ' @deviceOnly
+            ' throw ErrorCode.invalidDirection ' bs:disable-line
         end if
 
         ' bs:disable-next-line
