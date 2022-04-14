@@ -36,12 +36,8 @@ class SGFlexModel
         args = {
             width: -1,
             height: -1,
-            ' TODO: Remove disables when bslint stops complaining about unused variables for enums.
-            ' bs:disable-next-line
             direction: Direction.row,
-            ' bs:disable-next-line
             justifyContent: JustifyContent.flexStart,
-            ' bs:disable-next-line
             alignItems: AlignItems.flexStart
         }
 
@@ -55,24 +51,15 @@ class SGFlexModel
         m.justifyContent = args.justifyContent
         m.alignItems = args.alignItems
 
-        ' bs:disable-next-line
         if (m.direction = Direction.row)
-            ' bs:disable-next-line
             m.mainAxis = Axis.x
-            ' bs:disable-next-line
             m.crossAxis = Axis.y
-            ' bs:disable-next-line
             m.mainDimension = Dimension.width
-            ' bs:disable-next-line
             m.crossDimension = Dimension.height
         else
-            ' bs:disable-next-line
             m.mainAxis = Axis.y
-            ' bs:disable-next-line
             m.crossAxis = Axis.x
-            ' bs:disable-next-line
             m.mainDimension = Dimension.height
-            ' bs:disable-next-line
             m.crossDimension = Dimension.width
         end if
 
@@ -113,7 +100,6 @@ class SGFlexModel
         translations = []
 
         ' Main axis translations
-        ' bs:disable-next-line
         if (m.justifyContent = JustifyContent.flexStart)
             if (m.childrenBoundingRects[0][m.mainAxis] <> 0)
                 firstTranslation = { childIndex: 0 }
@@ -127,19 +113,15 @@ class SGFlexModel
                 translation[m.mainAxis] = prevTranslation[m.mainAxis] + m.childrenBoundingRects[i - 1][m.mainDimension]
                 translations.push(translation)
             end for
-            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.flexEnd)
 
-            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.center)
 
-            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.spaceBetween)
             if (m.childrenBoundingRects.count() > 1)
                 ' SB = (P_w - max(C_h)) / (n - 1)
                 spaceBetween = m[m.mainDimension]
                 accDimension = 0
-                ' bs:disable-next-line
                 if (m.direction = Direction.row)
                     accDimension = m.childrenAccWidth
                 else
@@ -169,22 +151,17 @@ class SGFlexModel
                     translations.push(translation)
                 end for
             end if
-            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.spaceAround)
 
-            ' bs:disable-next-line
         else if (m.justifyContent = JustifyContent.spaceEvenly)
 
         end if
 
         ' Cross axis translations
-        ' bs:disable-next-line
         if (m.alignItems = AlignItems.flexStart)
 
-            ' bs:disable-next-line
         else if (m.alignItems = AlignItems.flexEnd)
 
-            ' bs:disable-next-line
         else if (m.alignItems = AlignItems.center)
             for i = 0 to m.childrenBoundingRects.count() - 1
                 translatedCrossAxis = (m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]) / 2
@@ -214,35 +191,32 @@ class SGFlexModel
     end function
 
     private sub validateArgs(args as object)
-        ' bs:disable-next-line
         if ((args.direction <> Direction.row) and (args.direction <> Direction.column))
             if (m.logger <> invalid)
-                ' bs:disable-next-line
                 m.logger.error(ErrorCode.invalidDirection, args.direction)
             end if
-            ' TODO: Uncomment this when brighterscript supports `ThrowStatement` as `createVisitor`
-            ' argument.
-            ' @deviceOnly
-            ' throw ErrorCode.invalidDirection ' bs:disable-line
+            @deviceOnly
+            throw ErrorCode.invalidDirection ' bs:disable-line
         end if
 
-        ' bs:disable-next-line
         if ((args.justifyContent <> JustifyContent.flexStart) and (args.justifyContent <> JustifyContent.flexEnd) and (args.justifyContent <> JustifyContent.center) and (args.justifyContent <> JustifyContent.spaceBetween) and (args.justifyContent <> JustifyContent.spaceAround) and (args.justifyContent <> JustifyContent.spaceEvenly))
             if (m.logger <> invalid)
-                ' bs:disable-next-line
                 m.logger.error(ErrorCode.invalidJustifyContent, args.justifyContent)
             end if
+            @deviceOnly
+            throw ErrorCode.invalidJustifyContent
         end if
 
-        ' bs:disable-next-line
         if ((args.alignItems <> AlignItems.flexStart) and (args.alignItems <> AlignItems.flexEnd) and (args.alignItems <> AlignItems.center))
             if (m.logger <> invalid)
-                ' bs:disable-next-line
                 m.logger.error(ErrorCode.invalidAlignItems, args.alignItems)
             end if
+            @deviceOnly
+            throw ErrorCode.invalidAlignItems
         end if
     end sub
 
+    ' Returns the previous translation. If invalid, returns the previous child coordinates.
     private function getPreviousTranslation(currentIndex as integer, translations as object) as object
         prevTranslation = translations[translations.count() - 1]
         prevChild = m.childrenBoundingRects[currentIndex - 1]

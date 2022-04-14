@@ -16,9 +16,8 @@ export default function plugin() {
                 for (const func of event.file.parser.references.functionExpressions) {
                     func.body.walk(createVisitor({
                         DottedSetStatement: (statement) => handleDeviceOnlyAnnotation(statement, event),
-                        ExpressionStatement: (statement) => handleDeviceOnlyAnnotation(statement, event)
-                        // TODO: Uncomment this when `ThrowStatement` is supported as an argument for `createVisitor`
-                        // ThrowStatement: (statement) => handleDeviceOnlyAnnotation(statement, event)
+                        ExpressionStatement: (statement) => handleDeviceOnlyAnnotation(statement, event),
+                        ThrowStatement: (statement) => handleDeviceOnlyAnnotation(statement, event)
                     }), {
                         walkMode: WalkMode.visitStatements
                     });
