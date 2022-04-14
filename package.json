@@ -35,13 +35,13 @@
   },
   "homepage": "https://github.com/haystacknews/sg-flex#readme",
   "dependencies": {
-    "@rokucommunity/bslint": "^0.6.1",
+    "@rokucommunity/bslint": "^0.7.0",
     "brighterscript-formatter": "^1.6.10"
   },
   "devDependencies": {
     "@hulu/roca": "^0.25.0",
     "@types/node": "^17.0.23",
-    "brighterscript": "^0.47.3",
+    "brighterscript": "^0.48.1",
     "brs": "^0.43.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.13.0",
