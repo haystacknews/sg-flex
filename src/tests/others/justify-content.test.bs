@@ -1,6 +1,6 @@
 function main(args as object) as object
     return roca(args).describe("other justifyContent tests", sub()
-        m.it("direction=column", sub()
+        m.it("direction=column, justifyContent=spaceBetween", sub()
             args = {
                 width: 128,
                 height: 480,
@@ -12,6 +12,42 @@ function main(args as object) as object
             expected = [
                 { childIndex: 1, x: 0, y: 176 },
                 { childIndex: 2, x: 0, y: 352 }
+            ]
+            actual = sgf.getTranslations()
+            m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")
+        end sub)
+
+        m.it("direction=row, justifyContent=flexEnd", sub()
+            args = {
+                width: 512,
+                height: 128,
+                direction: "row",
+                justifyContent: "flexEnd"
+            }
+            boundingRect = { x: 0, y: 0, width: 128, height: 128 }
+            sgf = new SGFlexModel([boundingRect, boundingRect, boundingRect], args)
+            expected = [
+                { childIndex: 0, x: 128, y: 0 },
+                { childIndex: 1, x: 256, y: 0 },
+                { childIndex: 2, x: 384, y: 0 }
+            ]
+            actual = sgf.getTranslations()
+            m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")
+        end sub)
+
+        m.it("direction=column, justifyContent=flexEnd", sub()
+            args = {
+                width: 128,
+                height: 512,
+                direction: "column",
+                justifyContent: "flexEnd"
+            }
+            boundingRect = { x: 0, y: 0, width: 128, height: 128 }
+            sgf = new SGFlexModel([boundingRect, boundingRect, boundingRect], args)
+            expected = [
+                { childIndex: 0, x: 0, y: 128 },
+                { childIndex: 1, x: 0, y: 256 },
+                { childIndex: 2, x: 0, y: 384 }
             ]
             actual = sgf.getTranslations()
             m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")

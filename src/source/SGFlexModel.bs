@@ -20,7 +20,10 @@ class SGFlexModel
     private childrenMaxHeight as float
     private childrenMaxWidth as float
 
-    ' @param {dynamic[]} childrenBoundingRects - An array of bounding rects for each child.
+    private accMainDimension as float
+    private accCrossDimension as float
+
+    ' @param {object[]} childrenBoundingRects - An array of bounding rects for each child.
     ' @param {object} [_args] - An object containing the following properties:
     ' @param {float} [_args.width] - The width of the parent container. If not present it will be set as the accumulated width of the children.
     ' @param {float} [_args.height] - The height of the parent container. If not present it will be set as the accumulated height of the children.
@@ -80,6 +83,14 @@ class SGFlexModel
             end if
         end for
 
+        if (m.direction = Direction.row)
+            m.accMainDimension = m.childrenAccWidth
+            m.accCrossDimension = m.childrenAccHeight
+        else
+            m.accMainDimension = m.childrenAccHeight
+            m.accCrossDimension = m.childrenAccWidth
+        end if
+
         if (args.width < 0)
             m.width = m.childrenAccWidth
         else
@@ -111,10 +122,24 @@ class SGFlexModel
                 translation = { childIndex: i }
                 prevTranslation = m.getPreviousTranslation(i, translations)
                 translation[m.mainAxis] = prevTranslation[m.mainAxis] + m.childrenBoundingRects[i - 1][m.mainDimension]
+                translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
                 translations.push(translation)
             end for
         else if (m.justifyContent = JustifyContent.flexEnd)
+            for i = 0 to m.childrenBoundingRects.count() - 1
+                translation = { childIndex: i }
 
+                if (i = 0)
+                    translation[m.mainAxis] = m[m.mainDimension] - m.accMainDimension
+                else
+                    prevTranslation = m.getPreviousTranslation(i, translations)
+                    translation[m.mainAxis] = prevTranslation[m.mainAxis] + m.childrenBoundingRects[i - 1][m.mainDimension]
+                end if
+
+                translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
+
+                translations.push(translation)
+            end for
         else if (m.justifyContent = JustifyContent.center)
 
         else if (m.justifyContent = JustifyContent.spaceBetween)
@@ -222,7 +247,11 @@ class SGFlexModel
         prevChild = m.childrenBoundingRects[currentIndex - 1]
 
         if (prevTranslation = invalid)
-            prevTranslation = { x: prevChild.x, y: prevChild.y }
+            if (prevChild)
+                prevTranslation = { x: prevChild.x, y: prevChild.y }
+            else
+                prevTranslation = { x: 0, y: 0 }
+            end if
         end if
 
         return prevTranslation
