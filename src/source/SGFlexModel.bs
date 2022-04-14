@@ -141,7 +141,18 @@ class SGFlexModel
                 translations.push(translation)
             end for
         else if (m.justifyContent = JustifyContent.center)
-
+            spaceBefore = (m[m.mainDimension] - m.accMainDimension) / 2
+            for i = 0 to m.childrenBoundingRects.count() - 1
+                translation = { childIndex: i }
+                if (i = 0)
+                    translation[m.mainAxis] = spaceBefore
+                else
+                    prevTranslation = m.getPreviousTranslation(i, translations)
+                    translation[m.mainAxis] = prevTranslation[m.mainAxis] + m.childrenBoundingRects[i - 1][m.mainDimension]
+                end if
+                translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
+                translations.push(translation)
+            end for
         else if (m.justifyContent = JustifyContent.spaceBetween)
             if (m.childrenBoundingRects.count() > 1)
                 ' SB = (P_w - max(C_h)) / (n - 1)

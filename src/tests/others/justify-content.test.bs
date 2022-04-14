@@ -52,5 +52,41 @@ function main(args as object) as object
             actual = sgf.getTranslations()
             m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")
         end sub)
+
+        m.it("direction=row, justifyContent=center", sub()
+            args = {
+                width: 512,
+                height: 128,
+                direction: "row",
+                justifyContent: "center"
+            }
+            boundingRect = { x: 0, y: 0, width: 128, height: 128 }
+            sgf = new SGFlexModel([boundingRect, boundingRect, boundingRect], args)
+            expected = [
+                { childIndex: 0, x: 64, y: 0 },
+                { childIndex: 1, x: 192, y: 0 },
+                { childIndex: 2, x: 320, y: 0 }
+            ]
+            actual = sgf.getTranslations()
+            m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")
+        end sub)
+
+        m.it("direction=row, justifyContent=center", sub()
+            args = {
+                width: 128,
+                height: 512,
+                direction: "column",
+                justifyContent: "center"
+            }
+            boundingRect = { x: 0, y: 0, width: 128, height: 128 }
+            sgf = new SGFlexModel([boundingRect, boundingRect, boundingRect], args)
+            expected = [
+                { childIndex: 0, x: 0, y: 64 },
+                { childIndex: 1, x: 0, y: 192 },
+                { childIndex: 2, x: 0, y: 320 }
+            ]
+            actual = sgf.getTranslations()
+            m.assert.equal(FormatJson(actual), FormatJson(expected), "fail")
+        end sub)
     end sub)
 end function
