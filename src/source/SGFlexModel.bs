@@ -36,6 +36,7 @@ class SGFlexModel
 
         m.childrenBoundingRects = childrenBoundingRects
 
+        ' Default values for the arguments
         args = {
             width: -1,
             height: -1,
@@ -44,6 +45,7 @@ class SGFlexModel
             alignItems: AlignItems.flexStart
         }
 
+        ' Replace default values with arguments passed from the constructor arguments
         for each key in _args.keys()
             args[key] = _args[key]
         end for
@@ -66,6 +68,7 @@ class SGFlexModel
             m.crossDimension = Dimension.width
         end if
 
+        ' Set accumulated and maximum values
         m.childrenAccWidth = 0
         m.childrenAccHeight = 0
         m.childrenMaxWidth = 0
@@ -91,6 +94,8 @@ class SGFlexModel
             m.accCrossDimension = m.childrenAccWidth
         end if
 
+        ' If the dimensions are not set (default value is -1),
+        ' set them to the accumulated values
         if (args.width < 0)
             m.width = m.childrenAccWidth
         else
@@ -226,6 +231,8 @@ class SGFlexModel
         return translations
     end function
 
+    ' Validates the values for direction, justifyContent and alignItems.
+    ' @throws Will throw an error if an argument is invalid
     private sub validateArgs(args as object)
         if ((args.direction <> Direction.row) and (args.direction <> Direction.column))
             if (m.logger <> invalid)
