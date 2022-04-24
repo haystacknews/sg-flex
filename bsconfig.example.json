@@ -1,5 +1,6 @@
 {
     "extends": "bsconfig/bsconfig.dev.json",
     "host": "",
-    "password": ""
+    "password": "",
+    "rootDir": "src"
 }

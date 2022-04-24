@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "rm -r dist/ out/;  bsc",
-    "build:test-project": "npm run build && cp package.json dist/roku-deploy-staging && cd test-project && ropm install",
+    "build:test-project": "npm run build -- --project bsconfig/bsconfig.dev.json && cp package.json dist/roku-deploy-staging && cd test-project && ropm install",
     "build:test": "npm run build -- --project bsconfig/bsconfig.test.json",
     "test": "npm run build:test && cd dist/roku-deploy-staging && roca",
     "lint": "bslint --project 'bsconfig/bsconfig.lint.json' --lintConfig bsconfig/bslint.jsonc",

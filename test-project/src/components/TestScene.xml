@@ -5,20 +5,43 @@
 	xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd"
 >
 	<script type="text/brightscript" uri="pkg:/components/TestScene.brs" />
+	<interface>
+		<field id="childWidth" type="integer" alwaysNotify="true"/>
+		<field id="childHeight" type="integer" alwaysNotify="true"/>
+		<field id="currentOptionColumnIndex" type="integer" alwaysNotify="true"/>
+	</interface>
 	<children>
-		<Label text="hello"/>
-		<Rectangle width="1920" height="300" color="0x4B384C"/>
+		<!-- Screen background -->
+		<Rectangle width="1920" height="1080" color="0x393939"/>
+		<!-- Screen title -->
+		<Label text="Interactive demo" translation="[64, 29]"/>
+		<!-- SGFlex background -->
+		<Rectangle width="1790" height="596" color="0xA4A4A4" translation="[64, 101]"/>
+
 		<sgf_SGFlex
 			id="sgFlex"
 			direction="row"
 			justifyContent="spaceBetween"
 			alignItems="center"
-			width="1920"
-			height="300"
+			width="1790"
+			height="596"
+			translation="[64, 101]"
 		>
 			<Rectangle width="200" height="100" color="0xFFFF00"/>
 			<Rectangle width="100" height="200" color="0xFFFF00"/>
 			<Rectangle width="123" height="98" color="0xFFFF00"/>
 		</sgf_SGFlex>
+
+		<!-- Add child, Remove child, etc. -->
+		<ButtonGroup id="childrenButtons" translation="[64, 730]"/>
+
+		<Label text="direction" translation="[582, 730]"/>
+		<CheckList id="directionOptions" itemSize="[340, 71]" translation="[582, 789]"/>
+
+		<Label text="justifyContent" translation="[1036, 730]"/>
+		<CheckList id="justifyContentOptions" itemSize="[340, 71]" translation="[1036, 789]"/>
+
+		<Label text="alignItems" translation="[1490, 730]"/>
+		<CheckList id="alignItemsOptions" itemSize="[340, 71]" translation="[1490, 789]"/>
 	</children>
 </component>
