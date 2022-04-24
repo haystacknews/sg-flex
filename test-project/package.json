@@ -1,0 +1,12 @@
+{
+    "private": true,
+    "dependencies": {
+        "sgf": "file:../dist/roku-deploy-staging"
+    },
+    "devDependencies": {
+        "ropm": "^0.10.5"
+    },
+    "ropm": {
+        "rootDir": "./src"
+    }
+}

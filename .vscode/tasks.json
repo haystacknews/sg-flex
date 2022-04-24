@@ -8,7 +8,7 @@
                 "reveal": "silent",
                 "revealProblems": "onProblem"
             },
-            "script": "build",
+            "script": "build:test-project",
             "type": "npm"
         }
     ]

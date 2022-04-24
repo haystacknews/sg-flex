@@ -1,5 +1,12 @@
 {
     "extends": "bsconfig.dev.json",
+    "files": [
+        "manifest",
+        "source/**/*.*",
+        "components/**/*.*",
+        "images/**/*.*",
+        "tests/**/*.*"
+    ],
     "plugins": [
         "@rokucommunity/bslint",
         "./plugins/testAnnotations.ts"

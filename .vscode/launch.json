@@ -3,10 +3,10 @@
     "configurations": [
         {
             "enableDebuggerAutoRecovery": false,
-            "name": "Launch",
+            "name": "Launch Test App",
             "preLaunchTask": "build",
             "request": "launch",
-            "rootDir": "${workspaceFolder}/dist/roku-deploy-staging",
+            "rootDir": "${workspaceFolder}/test-project/src",
             "stopOnEntry": false,
             "type": "brightscript"
         }

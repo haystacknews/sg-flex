@@ -265,7 +265,7 @@ class SGFlexModel
         prevChild = m.childrenBoundingRects[currentIndex - 1]
 
         if (prevTranslation = invalid)
-            if (prevChild)
+            if (prevChild <> invalid)
                 prevTranslation = { x: prevChild.x, y: prevChild.y }
             else
                 prevTranslation = { x: 0, y: 0 }

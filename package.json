@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "rm -r dist/ out/;  bsc",
+    "build:test-project": "npm run build && cp package.json dist/roku-deploy-staging && cd test-project && ropm install",
     "build:test": "npm run build -- --project bsconfig/bsconfig.test.json",
     "test": "npm run build:test && cd dist/roku-deploy-staging && roca",
     "lint": "bslint --project 'bsconfig/bsconfig.lint.json' --lintConfig bsconfig/bslint.jsonc",
@@ -34,14 +35,13 @@
     "url": "https://github.com/haystacknews/sg-flex/issues"
   },
   "homepage": "https://github.com/haystacknews/sg-flex#readme",
-  "dependencies": {
-    "@rokucommunity/bslint": "^0.7.0",
-    "brighterscript-formatter": "^1.6.10"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@hulu/roca": "^0.25.0",
+    "@rokucommunity/bslint": "^0.7.0",
     "@types/node": "^17.0.23",
     "brighterscript": "^0.48.1",
+    "brighterscript-formatter": "^1.6.10",
     "brs": "^0.43.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.13.0",
