@@ -182,10 +182,10 @@ class SGFlexModel
                         translatedMainAxis = prevTranslation[m.mainAxis]
                         translatedMainAxis += prevChild[m.mainDimension]
                         translatedMainAxis += spaceBetween
-                        
+
                         translation[m.mainAxis] = translatedMainAxis
                     end if
-                    
+
                     translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
                     translations.push(translation)
                 end for
