@@ -115,10 +115,16 @@ class SGFlexModel
     public function getTranslations() as object
         translations = []
 
+        if (m.childrenBoundingRects.count() = 0)
+            return translations
+        end if
+
         ' Main axis translations
         if (m.justifyContent = JustifyContent.flexStart)
             if (m.childrenBoundingRects[0][m.mainAxis] <> 0)
                 firstTranslation = { childIndex: 0 }
+                ' In theory this should be `0`, but in practice some
+                ' children may have a negative `x` or `y` value before being translated.
                 firstTranslation[m.mainAxis] = m.childrenBoundingRects[0].[m.mainAxis] * -1
                 translations.push(firstTranslation)
             end if
@@ -160,7 +166,7 @@ class SGFlexModel
             end for
         else if (m.justifyContent = JustifyContent.spaceBetween)
             if (m.childrenBoundingRects.count() > 1)
-                ' SB = (P_w - max(C_h)) / (n - 1)
+                ' SB = (P_dim - max(C_dim)) / (n - 1)
                 spaceBetween = m[m.mainDimension]
                 accDimension = 0
                 if (m.direction = Direction.row)
@@ -199,23 +205,32 @@ class SGFlexModel
         end if
 
         ' Cross axis translations
-        if (m.alignItems = AlignItems.flexStart)
+        for i = 0 to m.childrenBoundingRects.count() - 1
+            ' Check if there's an existing translation for the current child to reuse it.
+            existingTranslationIndex = -1
+            for j = 0 to translations.count() - 1
+                if (translations[j].childIndex = i)
+                    existingTranslationIndex = j
+                    exit for
+                end if
+            end for
 
-        else if (m.alignItems = AlignItems.flexEnd)
-
-        else if (m.alignItems = AlignItems.center)
-            for i = 0 to m.childrenBoundingRects.count() - 1
-                translatedCrossAxis = (m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]) / 2
+            if (m.alignItems = AlignItems.flexStart)
+                if (existingTranslationIndex <> -1)
+                    ' In theory this should be `0`, but in practice some
+                    ' children may have a negative `x` or `y` value before being translated.
+                    translations[existingTranslationIndex][m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis] * -1
+                else
+                    translation = { childIndex: i }
+                    translation[m.mainAxis] = m.childrenBoundingRects[i][m.mainAxis]
+                    translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis] * -1
+                    translations.push(translation)
+                end if
+            else if (m.alignItems = AlignItems.flexEnd)
+                ' The main dimension of the container (`width` or `height`)
+                ' minus the main dimension of the child
+                translatedCrossAxis = m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]
                 translatedCrossAxis += m.childrenBoundingRects[i][m.crossAxis] * -1
-
-                existingTranslationIndex = -1
-
-                for j = 0 to translations.count() - 1
-                    if (translations[j].childIndex = i)
-                        existingTranslationIndex = j
-                        exit for
-                    end if
-                end for
 
                 if (existingTranslationIndex <> -1)
                     translations[existingTranslationIndex][m.crossAxis] = translatedCrossAxis
@@ -225,8 +240,22 @@ class SGFlexModel
                     translation[m.crossAxis] = translatedCrossAxis
                     translations.push(translation)
                 end if
-            end for
-        end if
+            else if (m.alignItems = AlignItems.center)
+                ' Half of the main dimension of the container (`width` or `height`)
+                ' minus the main dimension of the child
+                translatedCrossAxis = (m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]) / 2
+                translatedCrossAxis += m.childrenBoundingRects[i][m.crossAxis] * -1
+
+                if (existingTranslationIndex <> -1)
+                    translations[existingTranslationIndex][m.crossAxis] = translatedCrossAxis
+                else
+                    translation = { childIndex: i }
+                    translation[m.mainAxis] = m.childrenBoundingRects[i][m.mainAxis]
+                    translation[m.crossAxis] = translatedCrossAxis
+                    translations.push(translation)
+                end if
+            end if
+        end for
 
         return translations
     end function
@@ -239,7 +268,7 @@ class SGFlexModel
                 m.logger.error(ErrorCode.invalidDirection, args.direction)
             end if
             @deviceOnly
-            throw ErrorCode.invalidDirection ' bs:disable-line
+            throw ErrorCode.invalidDirection
         end if
 
         if ((args.justifyContent <> JustifyContent.flexStart) and (args.justifyContent <> JustifyContent.flexEnd) and (args.justifyContent <> JustifyContent.center) and (args.justifyContent <> JustifyContent.spaceBetween) and (args.justifyContent <> JustifyContent.spaceAround) and (args.justifyContent <> JustifyContent.spaceEvenly))
