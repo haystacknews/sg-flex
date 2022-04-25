@@ -10,6 +10,7 @@ function main(args as object) as object
             boundingRect = { x: 0, y: 0, width: 128, height: 128 }
             sgf = new SGFlexModel([boundingRect, boundingRect, boundingRect], args)
             expected = [
+                { childIndex: 0, x: 0, y: 0 },
                 { childIndex: 1, x: 0, y: 176 },
                 { childIndex: 2, x: 0, y: 352 }
             ]
