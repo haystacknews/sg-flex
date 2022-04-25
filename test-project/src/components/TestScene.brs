@@ -7,6 +7,7 @@ sub init()
     m.justifyContentOptions = m.top.findNode("justifyContentOptions")
     m.alignItemsOptions = m.top.findNode("alignItemsOptions")
 
+    m.childrenButtons.observeField("buttonSelected", "handleChildButtonSelected")
     m.directionOptions.observeField("itemSelected", "handleDirectionSelected")
     m.justifyContentOptions.observeField("itemSelected", "handleJustifyContentSelected")
     m.alignItemsOptions.observeField("itemSelected", "handleAlignItemsSelected")
@@ -45,6 +46,22 @@ sub init()
         "flexStart",
         "flexEnd",
         "center"
+    ]
+
+    ' Colors for the children
+    m.colors = [
+        ' red
+        "0xA90F0F",
+        ' green,
+        "0x2B9857",
+        ' blue
+        "0x2B4A98",
+        ' yellow
+        "0x98942B",
+        ' magenta
+        "0x982B5F",
+        ' cyan
+        "0x2B9198"
     ]
 
     ' Initialize children buttons
@@ -99,6 +116,35 @@ end sub
 sub handleAlignItemsSelected()
     ? "new alignItems selected", m.alignItemsValues[m.alignItemsOptions.itemSelected]
     m.sgf.alignItems = m.alignItemsValues[m.alignItemsOptions.itemSelected]
+end sub
+
+sub handleChildButtonSelected()
+    if (m.childrenButtons.buttonSelected = 0)
+        handleAddChild()
+    else if (m.childrenButtons.buttonSelected = 1)
+        handleRemoveChild()
+    else if (m.childrenButtons.buttonSelected = 2)
+    else if (m.childrenButtons.buttonSelected = 3)
+    end if
+end sub
+
+sub handleAddChild()
+    newChild = CreateObject("roSGNode", "Rectangle")
+    newChild.width = m.top.childWidth
+    newChild.height = m.top.childHeight
+    newChild.color = m.colors[m.sgf.getChildCount() - Int((m.sgf.getChildCount()) / m.colors.count()) * m.colors.count()]
+    
+    newChildLabel = CreateObject("roSGNode", "Label")
+    newChildLabel.text = m.sgf.getChildCount()
+    newChild.appendChild(newChildLabel)
+
+    m.sgf.appendChild(newChild)
+    m.sgf.callFunc("flexify")
+end sub
+
+sub handleRemoveChild()
+    m.sgf.removeChildIndex(m.sgf.getChildCount() - 1)
+    m.sgf.callFunc("flexify")
 end sub
 
 sub handleChildWidthChange()
