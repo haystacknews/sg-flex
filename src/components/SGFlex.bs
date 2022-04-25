@@ -4,15 +4,20 @@ sub init()
     m.flexifiedOnce = false
     m.childrenBoundingRects = invalid
     m.childrenMaxHeight = 0
+
+    m.top.observeField("width", "flexify")
+    m.top.observeField("height", "flexify")
+    m.top.observeField("direction", "flexify")
+    m.top.observeField("justifyContent", "flexify")
+    m.top.observeField("alignItems", "flexify")
 end sub
 
 sub flexify(force = false as boolean)
-    ? "flexify! force =", force
     if (m.top.flexifyOnce and m.flexifiedOnce and force = false)
         return
     end if
 
-    if (m.childrenBoundingRects = invalid)
+    if (m.childrenBoundingRects = invalid or m.childrenBoundingRects.count() = 0)
         m.childrenBoundingRects = []
         for each child in m.top.getChildren(-1, 0)
             childBoundingRect = child.boundingRect()

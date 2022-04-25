@@ -5,17 +5,17 @@
     xsi:noNamespaceSchemaLocation="https://devtools.web.roku.com/schema/RokuSceneGraph.xsd"
 >
     <interface>
-        <field id="width" type="integer" value="-1"/>
-        <field id="height" type="integer" value="-1"/>
+        <field id="width" type="integer" value="-1" alwaysNotify="true"/>
+        <field id="height" type="integer" value="-1" alwaysNotify="true"/>
 
-        <!-- "row" -->
-        <field id="direction" type="string" />
-        <!-- "start"|"end"|"center"|"spaceBetween"|"spaceAround"|"spaceEvenly" -->
-        <field id="justifyContent" type="string" />
-        <!-- "start"|"end"|"center" -->
-        <field id="alignItems" type="string" />
+        <!-- "row"|"column" -->
+        <field id="direction" value="row" type="string" alwaysNotify="true"/>
+        <!-- "flexStart"|"flexEnd"|"center"|"spaceBetween"|"spaceAround"|"spaceEvenly" -->
+        <field id="justifyContent" value="flexStart" type="string" alwaysNotify="true"/>
+        <!-- "flexStart"|"flexEnd"|"center" -->
+        <field id="alignItems" value="flexStart" type="string" alwaysNotify="true"/>
 
-        <field id="flexifyOnce" type="boolean" />
+        <field id="flexifyOnce" value="false" type="boolean" alwaysNotify="true"/>
 
         <function name="flexify" />
     </interface>
