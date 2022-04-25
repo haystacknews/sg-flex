@@ -6,8 +6,8 @@
 >
 	<script type="text/brightscript" uri="pkg:/components/TestScene.brs" />
 	<interface>
-		<field id="childWidth" type="integer" alwaysNotify="true"/>
-		<field id="childHeight" type="integer" alwaysNotify="true"/>
+		<field id="childWidth" type="integer" value="170" alwaysNotify="true"/>
+		<field id="childHeight" type="integer" value="170" alwaysNotify="true"/>
 		<field id="currentOptionColumnIndex" type="integer" alwaysNotify="true"/>
 	</interface>
 	<children>
@@ -27,21 +27,27 @@
 			height="596"
 			translation="[64, 101]"
 		>
-			<Rectangle width="200" height="100" color="0xFFFF00"/>
-			<Rectangle width="100" height="200" color="0xFFFF00"/>
-			<Rectangle width="123" height="98" color="0xFFFF00"/>
+			<Rectangle width="170" height="170" color="0xA90F0F">
+				<Label text="0" />
+			</Rectangle>
+			<Rectangle width="170" height="170" color="0x2B9857">
+				<Label text="1" />
+			</Rectangle>
+			<Rectangle width="170" height="170" color="0x2B4A98">
+				<Label text="2" />
+			</Rectangle>
 		</sgf_SGFlex>
 
 		<!-- Add child, Remove child, etc. -->
 		<ButtonGroup id="childrenButtons" translation="[64, 730]"/>
 
 		<Label text="direction" translation="[582, 730]"/>
-		<CheckList id="directionOptions" itemSize="[340, 71]" translation="[582, 789]"/>
+		<RadioButtonList id="directionOptions" itemSize="[340, 71]" translation="[582, 789]"/>
 
 		<Label text="justifyContent" translation="[1036, 730]"/>
-		<CheckList id="justifyContentOptions" itemSize="[340, 71]" translation="[1036, 789]"/>
+		<RadioButtonList id="justifyContentOptions" itemSize="[340, 71]" translation="[1036, 789]"/>
 
 		<Label text="alignItems" translation="[1490, 730]"/>
-		<CheckList id="alignItemsOptions" itemSize="[340, 71]" translation="[1490, 789]"/>
+		<RadioButtonList id="alignItemsOptions" itemSize="[340, 71]" translation="[1490, 789]"/>
 	</children>
 </component>

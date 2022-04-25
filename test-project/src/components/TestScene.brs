@@ -1,9 +1,15 @@
 sub init()
     m.sgf = m.top.findNode("sgFlex")
+    m.sgf.width = 1790
+    m.sgf.height = 596
     m.childrenButtons = m.top.findNode("childrenButtons")
     m.directionOptions = m.top.findNode("directionOptions")
     m.justifyContentOptions = m.top.findNode("justifyContentOptions")
     m.alignItemsOptions = m.top.findNode("alignItemsOptions")
+
+    m.directionOptions.observeField("itemSelected", "handleDirectionSelected")
+    m.justifyContentOptions.observeField("itemSelected", "handleJustifyContentSelected")
+    m.alignItemsOptions.observeField("itemSelected", "handleAlignItemsSelected")
 
     ' This array represents which column is focused. The index
     ' will be changed by onKeyEvent() when the user presses left or right.
@@ -17,16 +23,16 @@ sub init()
     m.top.currentOptionColumnIndex = 0
 
     ' Initial values
-    initialChildrenButtons = [
+    m.initialChildrenButtons = [
         "Add child",
         "Remove child",
         "Child Width: invalid",
         "Child Height: invalid"
     ]
 
-    directionOptions = ["row", "column"]
+    m.directionValues = ["row", "column"]
 
-    justifyContentValues = [
+    m.justifyContentValues = [
         "flexStart",
         "flexEnd",
         "center",
@@ -35,14 +41,14 @@ sub init()
         "spaceEvenly"
     ]
 
-    alignItemsValues = [
+    m.alignItemsValues = [
         "flexStart",
         "flexEnd",
         "center"
     ]
 
     ' Initialize children buttons
-    m.childrenButtons.buttons = initialChildrenButtons
+    m.childrenButtons.buttons = m.initialChildrenButtons
 
     ' Initialize values
     m.top.observeField("childWidth", "handleChildWidthChange")
@@ -51,18 +57,25 @@ sub init()
     m.top.childHeight = 170
 
     ' Initialize direction options
-    setupCheckListValues("direction",m.directionOptions, directionOptions)
+    setupRadioButtonListValues("direction", m.directionOptions, m.directionValues)
+    ' Start with "row" selected
+    m.directionOptions.checkedItem = 0
+    m.directionOptions.jumpToitem = 0
 
     ' Initialize justifyContent options
-    setupCheckListValues("justifyContent", m.justifyContentOptions, justifyContentValues)
+    setupRadioButtonListValues("justifyContent", m.justifyContentOptions, m.justifyContentValues)
+    ' Start with "spaceBetween" selected
+    m.justifyContentOptions.checkedItem = 3
+    m.justifyContentOptions.jumpToitem = 3
 
     ' Initialize alignItems options
-    setupCheckListValues("alignItems", m.alignItemsOptions, alignItemsValues)
-
-    m.sgf.callFunc("flexify")
+    setupRadioButtonListValues("alignItems", m.alignItemsOptions, m.alignItemsValues)
+    ' Start with "center" selected
+    m.alignItemsOptions.checkedItem = 2
+    m.alignItemsOptions.jumpToitem = 2
 end sub
 
-sub setupCheckListValues(title as string, node as object, values as object)
+sub setupRadioButtonListValues(title as string, node as object, values as object)
     contentNode = CreateObject("roSGNode", "ContentNode")
     contentNode.contentType = "section"
     contentNode.title = title
@@ -73,13 +86,30 @@ sub setupCheckListValues(title as string, node as object, values as object)
     node.content = contentNode
 end sub
 
+sub handleDirectionSelected()
+    ? "new direction selected", m.directionValues[m.directionOptions.itemSelected]
+    m.sgf.direction = m.directionValues[m.directionOptions.itemSelected]
+end sub
+
+sub handleJustifyContentSelected()
+    ? "new justifyContent selected", m.justifyContentValues[m.justifyContentOptions.itemSelected]
+    m.sgf.justifyContent = m.justifyContentValues[m.justifyContentOptions.itemSelected]
+end sub
+
+sub handleAlignItemsSelected()
+    ? "new alignItems selected", m.alignItemsValues[m.alignItemsOptions.itemSelected]
+    m.sgf.alignItems = m.alignItemsValues[m.alignItemsOptions.itemSelected]
+end sub
+
 sub handleChildWidthChange()
+    ? "new childWidth", m.top.childWidth.toStr()
     newButtons = m.childrenButtons.buttons
     newButtons[2] = "Child Width: " + m.top.childWidth.ToStr() + "px"
     m.childrenButtons.buttons = newButtons
 end sub
 
 sub handleChildHeightChange()
+    ? "new childHeight", m.top.childHeight.toStr()
     newButtons = m.childrenButtons.buttons
     newButtons[3] = "Child Height: " + m.top.childHeight.ToStr() + "px"
     m.childrenButtons.buttons = newButtons
