@@ -2,8 +2,6 @@ import "pkg:/source/SGFlexModel.bs"
 
 sub init()
     m.flexifiedOnce = false
-    m.childrenBoundingRects = invalid
-    m.childrenMaxHeight = 0
 
     m.top.observeField("width", "flexify")
     m.top.observeField("height", "flexify")
@@ -17,18 +15,10 @@ sub flexify(force = false as boolean)
         return
     end if
 
-    if (m.childrenBoundingRects = invalid or m.childrenBoundingRects.count() = 0)
-        m.childrenBoundingRects = []
-        for each child in m.top.getChildren(-1, 0)
-            childBoundingRect = child.boundingRect()
-
-            if (childBoundingRect.height > m.childrenMaxHeight)
-                m.childrenMaxHeight = childBoundingRect.height
-            end if
-
-            m.childrenBoundingRects.push(childBoundingRect)
-        end for
-    end if
+    childrenBoundingRects = []
+    for each child in m.top.getChildren(-1, 0)
+        childrenBoundingRects.push(child.boundingRect())
+    end for
 
     sgfArgs = {
         width: m.top.width,
@@ -37,7 +27,7 @@ sub flexify(force = false as boolean)
         justifyContent: m.top.justifyContent,
         alignItems: m.top.alignItems
     }
-    sgf = new SGFlexModel(m.childrenBoundingRects, sgfArgs)
+    sgf = new SGFlexModel(childrenBoundingRects, sgfArgs)
 
     childrenTranslations = sgf.getTranslations()
 

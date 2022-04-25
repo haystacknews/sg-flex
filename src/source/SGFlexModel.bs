@@ -123,9 +123,7 @@ class SGFlexModel
         if (m.justifyContent = JustifyContent.flexStart)
             if (m.childrenBoundingRects[0][m.mainAxis] <> 0)
                 firstTranslation = { childIndex: 0 }
-                ' In theory this should be `0`, but in practice some
-                ' children may have a negative `x` or `y` value before being translated.
-                firstTranslation[m.mainAxis] = m.childrenBoundingRects[0].[m.mainAxis] * -1
+                firstTranslation[m.mainAxis] = 0
                 translations.push(firstTranslation)
             end if
 
@@ -171,24 +169,24 @@ class SGFlexModel
                 spaceBetween -= m.accMainDimension
                 spaceBetween /= m.childrenBoundingRects.count() - 1
 
-                for i = 1 to m.childrenBoundingRects.count() - 1
-                    prevTranslation = m.getPreviousTranslation(i, translations)
-                    prevChild = m.childrenBoundingRects[i - 1]
-
-                    ' Translation formula (change "x" to "y" and "w" to "h" for direction = column)
-                    ' T(n)_x = T(n-1)_x + C(n-1)_w + SB + (C(n-1)_x * -1)
-                    ' We consider the last term to account for children
-                    ' whose center of coordinates is not the top left of their boundingRect.
-                    ' For example, children that are `LayoutGroup`s with `horizAlignment` = "center"
-                    translatedMainAxis = prevTranslation[m.mainAxis]
-                    translatedMainAxis += prevChild[m.mainDimension]
-                    translatedMainAxis += spaceBetween
-                    translatedMainAxis += m.childrenBoundingRects[i].[m.mainAxis] * -1
-
+                for i = 0 to m.childrenBoundingRects.count() - 1
                     translation = { childIndex: i }
-                    translation[m.mainAxis] = translatedMainAxis
-                    translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
+                    if (i = 0)
+                        translation[m.mainAxis] = 0
+                    else
+                        prevTranslation = m.getPreviousTranslation(i, translations)
+                        prevChild = m.childrenBoundingRects[i - 1]
 
+                        ' Translation formula (change "x" to "y" and "w" to "h" for direction = column)
+                        ' T(n)_x = T(n-1)_x + C(n-1)_w + SB
+                        translatedMainAxis = prevTranslation[m.mainAxis]
+                        translatedMainAxis += prevChild[m.mainDimension]
+                        translatedMainAxis += spaceBetween
+                        
+                        translation[m.mainAxis] = translatedMainAxis
+                    end if
+                    
+                    translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
                     translations.push(translation)
                 end for
             end if
@@ -210,8 +208,6 @@ class SGFlexModel
                         translatedMainAxis = prevTranslation[m.mainAxis]
                         translatedMainAxis += prevChild[m.mainDimension]
                         translatedMainAxis += spaceAround
-                        
-                        translatedMainAxis += m.childrenBoundingRects[i].[m.mainAxis] * -1
 
                         translation[m.mainAxis] = translatedMainAxis
                         translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
@@ -238,7 +234,6 @@ class SGFlexModel
                         translatedMainAxis = prevTranslation[m.mainAxis]
                         translatedMainAxis += prevChild[m.mainDimension]
                         translatedMainAxis += spaceEvenly
-                        translatedMainAxis += m.childrenBoundingRects[i].[m.mainAxis] * -1
 
                         translation[m.mainAxis] = translatedMainAxis
                         translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
@@ -262,20 +257,17 @@ class SGFlexModel
 
             if (m.alignItems = AlignItems.flexStart)
                 if (existingTranslationIndex <> -1)
-                    ' In theory this should be `0`, but in practice some
-                    ' children may have a negative `x` or `y` value before being translated.
-                    translations[existingTranslationIndex][m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis] * -1
+                    translations[existingTranslationIndex][m.crossAxis] = 0
                 else
                     translation = { childIndex: i }
                     translation[m.mainAxis] = m.childrenBoundingRects[i][m.mainAxis]
-                    translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis] * -1
+                    translation[m.crossAxis] = 0
                     translations.push(translation)
                 end if
             else if (m.alignItems = AlignItems.flexEnd)
                 ' The main dimension of the container (`width` or `height`)
                 ' minus the main dimension of the child
                 translatedCrossAxis = m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]
-                translatedCrossAxis += m.childrenBoundingRects[i][m.crossAxis] * -1
 
                 if (existingTranslationIndex <> -1)
                     translations[existingTranslationIndex][m.crossAxis] = translatedCrossAxis
@@ -289,7 +281,6 @@ class SGFlexModel
                 ' Half of the main dimension of the container (`width` or `height`)
                 ' minus the main dimension of the child
                 translatedCrossAxis = (m[m.crossDimension] - m.childrenBoundingRects[i][m.crossDimension]) / 2
-                translatedCrossAxis += m.childrenBoundingRects[i][m.crossAxis] * -1
 
                 if (existingTranslationIndex <> -1)
                     translations[existingTranslationIndex][m.crossAxis] = translatedCrossAxis
