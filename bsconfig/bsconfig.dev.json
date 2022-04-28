@@ -12,6 +12,12 @@
                 1107
             ],
             "src": "**/roku_modules/**/*"
+        },
+        {
+            "codes": [
+                1107
+            ],
+            "src": "components/TestScene.xml"
         }
     ],
     "files": [
