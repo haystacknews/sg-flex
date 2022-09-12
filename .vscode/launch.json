@@ -8,7 +8,8 @@
             "request": "launch",
             "rootDir": "${workspaceFolder}/test-project/src",
             "stopOnEntry": false,
-            "type": "brightscript"
+            "type": "brightscript",
+            "injectRdbOnDeviceComponent": true
         }
     ]
 }
