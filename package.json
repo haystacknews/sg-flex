@@ -1,6 +1,6 @@
 {
   "name": "sg-flex",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Flexbox for Roku's SceneGraph",
   "engines": {
     "node": ">=16.14.2",
