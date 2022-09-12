@@ -51,7 +51,7 @@ Grab our latest release from our [Releases](https://github.com/haystacknews/sg-f
     <Rectangle width="170" height="170" color="0x2B4A98">
         <Label text="2" />
     </Rectangle>
-</sgf_SGFlex>
+</SGFlex>
 ```
 
 ### Or programatically
