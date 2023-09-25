@@ -191,57 +191,53 @@ class SGFlexModel
                 end for
             end if
         else if (m.justifyContent = JustifyContent.spaceAround)
-            if (m.childrenBoundingRects.count() > 1)
-                spaceAround = m[m.mainDimension]
-                spaceAround -= m.accMainDimension
-                spaceAround /= m.childrenBoundingRects.count()
+            spaceAround = m[m.mainDimension]
+            spaceAround -= m.accMainDimension
+            spaceAround /= m.childrenBoundingRects.count()
 
-                for i = 0 to m.childrenBoundingRects.count() - 1
-                    translation = { childIndex: i }
+            for i = 0 to m.childrenBoundingRects.count() - 1
+                translation = { childIndex: i }
 
-                    if (i = 0)
-                        translation[m.mainAxis] = spaceAround / 2
-                    else
-                        prevTranslation = m.getPreviousTranslation(i, translations)
-                        prevChild = m.childrenBoundingRects[i - 1]
+                if (i = 0)
+                    translation[m.mainAxis] = spaceAround / 2
+                else
+                    prevTranslation = m.getPreviousTranslation(i, translations)
+                    prevChild = m.childrenBoundingRects[i - 1]
 
-                        translatedMainAxis = prevTranslation[m.mainAxis]
-                        translatedMainAxis += prevChild[m.mainDimension]
-                        translatedMainAxis += spaceAround
+                    translatedMainAxis = prevTranslation[m.mainAxis]
+                    translatedMainAxis += prevChild[m.mainDimension]
+                    translatedMainAxis += spaceAround
 
-                        translation[m.mainAxis] = translatedMainAxis
-                        translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
-                    end if
+                    translation[m.mainAxis] = translatedMainAxis
+                    translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
+                end if
 
-                    translations.push(translation)
-                end for
-            end if
+                translations.push(translation)
+            end for
         else if (m.justifyContent = JustifyContent.spaceEvenly)
-            if (m.childrenBoundingRects.count() > 1)
-                spaceEvenly = m[m.mainDimension]
-                spaceEvenly -= m.accMainDimension
-                spaceEvenly /= m.childrenBoundingRects.count() + 1
+            spaceEvenly = m[m.mainDimension]
+            spaceEvenly -= m.accMainDimension
+            spaceEvenly /= m.childrenBoundingRects.count() + 1
 
-                for i = 0 to m.childrenBoundingRects.count() - 1
-                    translation = { childIndex: i }
+            for i = 0 to m.childrenBoundingRects.count() - 1
+                translation = { childIndex: i }
 
-                    if (i = 0)
-                        translation[m.mainAxis] = spaceEvenly
-                    else
-                        prevTranslation = m.getPreviousTranslation(i, translations)
-                        prevChild = m.childrenBoundingRects[i - 1]
+                if (i = 0)
+                    translation[m.mainAxis] = spaceEvenly
+                else
+                    prevTranslation = m.getPreviousTranslation(i, translations)
+                    prevChild = m.childrenBoundingRects[i - 1]
 
-                        translatedMainAxis = prevTranslation[m.mainAxis]
-                        translatedMainAxis += prevChild[m.mainDimension]
-                        translatedMainAxis += spaceEvenly
+                    translatedMainAxis = prevTranslation[m.mainAxis]
+                    translatedMainAxis += prevChild[m.mainDimension]
+                    translatedMainAxis += spaceEvenly
 
-                        translation[m.mainAxis] = translatedMainAxis
-                        translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
-                    end if
+                    translation[m.mainAxis] = translatedMainAxis
+                    translation[m.crossAxis] = m.childrenBoundingRects[i][m.crossAxis]
+                end if
 
-                    translations.push(translation)
-                end for
-            end if
+                translations.push(translation)
+            end for
         end if
 
         ' Cross axis translations
