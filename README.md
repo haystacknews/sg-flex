@@ -18,12 +18,6 @@ A Flexbox node for Roku's SceneGraph.
 
 ## Install
 
-### With [ropm](https://github.com/rokucommunity/ropm)
-
-```
-(tbd)
-```
-
 ### Manual install
 
 Grab our latest release from our [Releases](https://github.com/haystacknews/sg-flex/releases) page and copy the contents of the `components` and `source` folders into the root of the equivalent folders in your application. Remember to update the import scripts if you copy them anywhere else.
