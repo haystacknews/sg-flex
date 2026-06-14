@@ -156,8 +156,6 @@ Hi! I'm Arturo Cuya, the main contributor of this project. If you have a questio
 
 ## Contributing
 
-> todo: explain this nicely
-
 - Remember to fork this repo and making a PR from yours into this instead of pulling this repo and doing modifications directly.
 
 - Use this node environment
